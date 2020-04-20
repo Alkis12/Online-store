@@ -1,10 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+    {% if current_user.is_authenticated %}
+    <h1>Личный кабинет</h1>
+    <div class="col-md6 border rounded">
+        <h2>{{ user.name }} {{ user.surname }}</h2>
+        <div>
+            {{ user.email }}
+        </div>
+        <div>
+            У Вас на счету {{ user.money }} рублей.
+        </div>
+    </div>
+        {% if user.vip %}
+         У Вас есть вип.
+        {% else %}
+        <div class="col-md6 border rounded">
+        За символическую сумму мы предлагаем Вам приобрести вип, который даст скидку 20% на любую покупку!
+            Только сегодня он стоит всего 750 бонусов!
+        </div>
+        {% endif %}
+    {% else %}
+    Эта страница недоступна для пользователей, которые не вошли в систему. Войдите или зарегистрируйтесь, чтобы продолжить.
+    {% endif %}
+{% endblock %}

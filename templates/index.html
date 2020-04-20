@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+    <h1>Список товаров</h1>
+    {% for item in products%}
+    <a class="btn btn-primary " href="/product/{{ item.id }}">
+    <div class="col-md6 border rounded">
+        <h2>{{ item.title }}</h2>
+        <div>
+            <img src={{item.image}} alt="Здесь была картинка товара, но её украли">
+        </div>
+        <div>
+            {{item.price}}
+        </div>
+    </div>
+    </a>
+    {% endfor %}
+{% endblock %}
