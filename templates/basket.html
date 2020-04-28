@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<h1>Корзина</h1>
+
+{% for item in products%}
+<br>
+{% if item.id in basket %}
+<div class="col-md6 border rounded">
+    <h3>{{ item.title }}</h3>
+    {{ item.description }}
+    <div>
+        {{item.price}} ₽
+    </div>
+    <a class="btn btn-danger " href="/basket_del/{{ item.id }}">Удалить</a>
+</div>
+{% endif %}
+{% endfor %}
+{% if basket %}
+<br>
+<a class="btn btn-warning " href="/basket_buy">Купить</a>
+<a class="btn btn-warning " href="/basket_buy_with_bonuses">Купить с использованием бонусов</a>
+{% endif %}
+{% else %}
+Эта страница недоступна для пользователей, которые не вошли в систему. Войдите или зарегистрируйтесь, чтобы продолжить.
+{% endif %}
+{% endblock %}

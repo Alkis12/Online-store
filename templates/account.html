@@ -1,26 +1,28 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if current_user.is_authenticated %}
-    <h1>Личный кабинет</h1>
-    <div class="col-md6 border rounded">
-        <h2>{{ user.name }} {{ user.surname }}</h2>
-        <div>
-            {{ user.email }}
-        </div>
-        <div>
-            У Вас на счету {{ user.money }} рублей.
-        </div>
+{% if current_user.is_authenticated %}
+<h1>Профиль</h1>
+<div class="col-md6 border rounded">
+    <h2>{{ current_user.name }} {{ current_user.surname }}</h2>
+    <div>
+        {{ current_user.email }}
     </div>
-        {% if user.vip %}
-         У Вас есть вип.
-        {% else %}
-        <div class="col-md6 border rounded">
-        За символическую сумму мы предлагаем Вам приобрести вип, который даст скидку 20% на любую покупку!
-            Только сегодня он стоит всего 750 бонусов!
-        </div>
-        {% endif %}
-    {% else %}
-    Эта страница недоступна для пользователей, которые не вошли в систему. Войдите или зарегистрируйтесь, чтобы продолжить.
-    {% endif %}
+    <div>
+        У Вас на счету {{ current_user.money }} рублей и {{ current_user.bonuses }} бонусов
+        <a class="btn btn-warning " href="/money">Пополнить баланс</a>
+    </div>
+</div>
+{% if current_user.is_vip %}
+У Вас есть вип.
+{% else %}
+<div class="col-md6 border rounded">
+    За символическую сумму мы предлагаем Вам приобрести вип, который даст скидку 20% на любую покупку!
+    Только сегодня он стоит всего 750 бонусов!
+    <a class="btn btn-warning " href="/vip">Купить вип</a>
+</div>
+{% endif %}
+{% else %}
+Эта страница недоступна для пользователей, которые не вошли в систему. Войдите или зарегистрируйтесь, чтобы продолжить.
+{% endif %}
 {% endblock %}
