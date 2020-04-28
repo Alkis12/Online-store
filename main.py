@@ -61,7 +61,10 @@ def basket():
     session = db_session.create_session()
     products = session.query(Products)
     if current_user.is_authenticated:
-        basket_ = [int(i) for i in current_user.basket.split()]
+        if current_user.basket:
+            basket_ = [int(i) for i in current_user.basket.split()]
+        else:
+            basket_ = []
     else:
         basket_ = ''
     return render_template("basket.html", products=products, basket=basket_)
