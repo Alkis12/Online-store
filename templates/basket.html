@@ -1,28 +1,46 @@
 {% extends "base.html" %}
 
 {% block content %}
+<head>
+    <title>Корзина</title>
+</head>
 {% if current_user.is_authenticated %}
-<h1>Корзина</h1>
-
-{% for item in products%}
+<center><h1>Корзина</h1></center>
 <br>
-{% if item.id in basket %}
-<div class="col-md6 border rounded">
-    <h3>{{ item.title }}</h3>
-    {{ item.description }}
-    <div>
-        {{item.price}} ₽
-    </div>
-    <a class="btn btn-danger " href="/basket_del/{{ item.id }}">Удалить</a>
-</div>
-{% endif %}
-{% endfor %}
-{% if basket %}
-<br>
-<a class="btn btn-warning " href="/basket_buy">Купить</a>
-<a class="btn btn-warning " href="/basket_buy_with_bonuses">Купить с использованием бонусов</a>
-{% endif %}
+    {% for item in products%}
+        {% if item.id in basket %}
+            <br>
+            <div class="col-md6 border rounded">
+                <h3>{{ item.title }}</h3>
+                {{ item.description }}
+                <div>
+                    {% if current_user.is_vip %}
+                    {{(item.price * 0.8) * 100 // 1 / 100}} ₽ (20% скидка)
+                    {% else %}
+                    {{item.price * 100 // 1 / 100}} ₽
+                    {% endif %}
+                </div>
+                <a class="btn btn-danger btn-sm" href="/basket_del/{{ item.id }}">Убрать из корзины</a>
+            </div>
+            {% endif %}
+        {% endfor %}
+    {% if basket %}
+        <br>
+        Суммарная стоимость - {{ price * 100 // 1 / 100 }}₽
+        {% if current_user.bonuses > 0 %}
+        Суммарная стоимость с бонусами- {{ price_ * 100 // 1 / 100 }}₽
+        {% endif %}
+        <br><br>
+        <a class="btn btn-warning btn-lg" href="/basket_buy">Купить</a>
+        {% if current_user.bonuses > 0 %}
+        <a class="btn btn-warning btn-lg" href="/basket_buy_with_bonuses">Купить с использованием бонусов (не более 50% от суммы)</a>
+        {% else %}
+        <a class="btn btn-warning disabled btn-lg" href="/basket_buy_with_bonuses">Купить с использованием бонусов (не более 50% от суммы)</a>{% endif %}
+    {% else %}
+        Корзина пуста
+        {% endif %}
 {% else %}
-Эта страница недоступна для пользователей, которые не вошли в систему. Войдите или зарегистрируйтесь, чтобы продолжить.
-{% endif %}
+    Эта страница недоступна для пользователей, которые не вошли в систему. <a href="/login">Войдите</a> или <a href="/register">зарегистрируйтесь</a>, чтобы продолжить.
+    {% endif %}
+
 {% endblock %}

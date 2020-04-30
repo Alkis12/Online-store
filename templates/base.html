@@ -1,44 +1,51 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script type="text/javascript" src="https://vk.com/js/api/openapi.js?167"></script>
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
           crossorigin="anonymous">
-    <title>{{title}}</title>
 </head>
 <body>
 <header>
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="#">Интернет-магазин</a>
-        {% if current_user.is_authenticated %}
-        <a class="navbar-brand" href="/logout">{{ current_user.name }} {{ current_user.surname }}</a>
-        {% else %}
-        <p>
-            <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
-            <a class="btn btn-success" href="/login">Войти</a>
-        </p>
-
-        {% endif %}
-        <a class="btn btn-primary " href="/account">Профиль</a>
         <a class="btn btn-primary " href="/">На главную</a>
-        <a class="btn btn-primary " href="/bot">Заработать бонусы</a>
+        <a class="btn btn-primary " href="/account">Профиль</a>
+        <a class="btn btn-primary " href="/clicker">Заработать бонусы</a>
         <a class="btn btn-primary " href="/basket">Корзина</a>
+        {% if current_user.is_authenticated %}
+        <a class="btn btn-danger " href="/logout">Выйти из аккаунта</a>
+        {% else %}
+        <p><a class="btn btn-success btn-block" href="/login">Войти</a>
+            <a class="btn btn-primary " href="/register">Зарегистрироваться</a></p>
+        {% endif %}
+
 
 
     </nav>
     {% if current_user.is_authenticated %}
-    <div align="right">
-        У Вас на счету {{ current_user.money }} рублей и {{ current_user.bonuses }} бонусов
+    <div align="right" style="padding: 5px">
+        У Вас на счету {{ current_user.money * 100 // 1 / 100 }} рублей и {{ current_user.bonuses * 100 // 1 / 100 }} бонусов
+        {% if current_user.is_vip %}
+        <br>У Вас есть ВИП.
+        {% endif %}
     </div>
     <br>
     {% endif %}
 </header>
-<!-- Begin page content -->
 <main role="main" class="container">
-    {% block content %}{% endblock %}
+    <div id="vk_community_messages"></div>
+    <script type="text/javascript">
+VK.Widgets.CommunityMessages("vk_community_messages", 194780163, {disableExpandChatSound: "1",disableButtonTooltip: "1"});
+
+    </script>
+    {% block content %}
+
+    {% endblock %}
 </main>
 </body>
 </html>

@@ -1,5 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Бот</h1>
+<head>
+    <title>Кликер</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+</head>
+{% if current_user.is_authenticated %}
+{% set o = 0 %}
+<center><h1>Кликер</h1></center>
+<center>Правила просты - кликай на кнопку. За каждое нажатие - 1 очко. 10 очков можно перевести в 1 бонус.</center>
+<br><br>
+<center><a class="btn btn-warning btn-lg" href="/clicker">Клик</a></center>
+
+{% else %}
+Эта страница недоступна для пользователей, которые не вошли в систему. <a href="/login">Войдите</a> или <a
+        href="/register">зарегистрируйтесь</a>, чтобы продолжить.
+{% endif %}
 {% endblock %}

@@ -23,8 +23,12 @@ class User(SqlAlchemyBase, UserMixin):
     is_vip = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
     products = orm.relation('Products')
 
+    def bonus(self):
+        return self.bonuses
+
     def __repr__(self):
-        return f'<User> {self.id} {self.name} {self.email}'
+        # return f'<User> {self.email} {self.name} {self.surname} {self.money} рублей; {self.bonuses} бонусов'
+        return 'real'
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)

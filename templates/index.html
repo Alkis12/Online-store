@@ -1,27 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Список товаров</h1>
-{% if current_user.is_authenticated and current_user.is_provider %}
-<a href="/products" class="btn btn-secondary">Добавить товар</a>
+<head>
+    <title>Главная</title>
+</head>
+<center><h1>Список товаров</h1><br></center>
+{% if current_user.is_provider %}
+<center><a href="/products" class="btn btn-secondary">Добавить товар</a><br></center>
 {% endif %}
 {% for item in products%}
-<br>
 <br>
 <div class="col-md6 border rounded">
     <h3>{{ item.title }}</h3>
     {{ item.description }}
     <div>
-        {{item.price}} ₽
+        {{ item.price * 100 // 1 / 100 }} ₽
     </div>
     {% if current_user.is_authenticated %}
     <a class="btn btn-info " href="/product/{{ item.id }}">В корзину</a>
     {% endif %}
-
     {% if current_user.is_authenticated and current_user == item.user and current_user.is_provider %}
     <a href="/products/edit/{{ item.id }}" class="btn btn-warning">Изменить</a>
     <a href="/product_delete/{{ item.id }}" class="btn btn-danger">Удалить</a>
-</div>
+    <br>
 {% endif %}
+</div>
 {% endfor %}
 {% endblock %}

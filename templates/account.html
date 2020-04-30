@@ -1,28 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
+<head>
+    <title>Профиль</title>
+</head>
 {% if current_user.is_authenticated %}
-<h1>Профиль</h1>
-<div class="col-md6 border rounded">
-    <h2>{{ current_user.name }} {{ current_user.surname }}</h2>
-    <div>
-        {{ current_user.email }}
-    </div>
-    <div>
-        У Вас на счету {{ current_user.money }} рублей и {{ current_user.bonuses }} бонусов
-        <a class="btn btn-warning " href="/money">Пополнить баланс</a>
-    </div>
+<center><h1>Профиль</h1></center>
+<br>
+<h2>{{ current_user.name }} {{ current_user.surname }}</h2>
+<div>
+    {{ current_user.email }}
 </div>
+<div>
+    У Вас на счету {{ current_user.money * 100 // 1 / 100}} рублей и {{ current_user.bonuses * 100 // 1 / 100}} бонусов
+    <a class="btn btn-warning " href="/money">Пополнить баланс</a>
+</div>
+<br>
 {% if current_user.is_vip %}
-У Вас есть вип.
+Вы приобрели VIP.
 {% else %}
-<div class="col-md6 border rounded">
-    За символическую сумму мы предлагаем Вам приобрести вип, который даст скидку 20% на любую покупку!
-    Только сегодня он стоит всего 750 бонусов!
-    <a class="btn btn-warning " href="/vip">Купить вип</a>
-</div>
+За символическую сумму мы предлагаем Вам приобрести VIP!
+Только сегодня он стоит всего 500 рублей!<br>
+<a class="btn btn-warning " href="/vip">Купить вип</a>
 {% endif %}
+<br>
+Пользователи с VIP получают скидку 20% при покупке любого товара.
 {% else %}
-Эта страница недоступна для пользователей, которые не вошли в систему. Войдите или зарегистрируйтесь, чтобы продолжить.
+Эта страница недоступна для пользователей, которые не вошли в систему. <a href="/login">Войдите</a> или <a href="/register">зарегистрируйтесь</a>, чтобы продолжить.
 {% endif %}
 {% endblock %}
