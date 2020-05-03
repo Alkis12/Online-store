@@ -285,10 +285,12 @@ def product_delete(id):
     products = session.query(Products).filter(Products.id == id,
                                               Products.user == current_user).first()
     if products:
-        s = current_user.basket.split()
-        s.remove(str(id))
-        current_user.basket = ' '.join(s)
+        s = str(current_user.basket).split()
+        if str(id) in s:
+            s.remove(str(id))
+            current_user.basket = ' '.join(s)
         session.delete(products)
+        session.merge(current_user)
         session.commit()
     else:
         abort(404)
