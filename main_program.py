@@ -302,8 +302,9 @@ def product_delete(id):
 def basket_delete(id):
     session = db_session.create_session()
     s = current_user.basket.split()
-    s.remove(str(id))
-    current_user.basket = ' '.join(s)
+    if str(id) in s:
+        s.remove(str(id))
+        current_user.basket = ' '.join(s)
     session.merge(current_user)
     session.commit()
     return redirect('/basket')
